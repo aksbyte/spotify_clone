@@ -3,7 +3,6 @@ import 'package:spotify_clone/common/helpers/dark_mode.dart';
 import 'package:spotify_clone/common/widget/app_bar/app_bar.dart';
 import 'package:spotify_clone/presentation/pages/auth/pages/sign_in.dart';
 import 'package:spotify_clone/presentation/pages/auth/pages/sign_up.dart';
-
 import '../../../../common/common_import.dart';
 
 class SignupOrSigningPage extends StatelessWidget {
@@ -21,7 +20,7 @@ class SignupOrSigningPage extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.bottomRight,
-            child: SvgPicture.asset(AppVectors.bottomPatter),
+            child: SvgPicture.asset(AppVectors.bottomPattern),
           ),
           Align(
             alignment: Alignment.bottomLeft,
@@ -63,7 +62,7 @@ class SignupOrSigningPage extends StatelessWidget {
                         child:
                         BasicAppButton(onPressed: () {
                           Navigator.push(context, CupertinoPageRoute(
-                            builder: (context) => const SignUpPage(),));
+                            builder: (context) =>  SignUpPage(),));
                         }, title: 'Register'),
                       ),
                       const SizedBox(
@@ -76,7 +75,7 @@ class SignupOrSigningPage extends StatelessWidget {
                             Navigator.pushReplacement(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => const SignInPage(),
+                                  builder: (context) =>  SignInPage(),
                                 ));
                           },
                           child: Text(

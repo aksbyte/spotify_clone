@@ -1,10 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:spotify_clone/common/widget/app_bar/app_bar.dart';
-
+import 'package:spotify_clone/common/widget/custom_snack_bar.dart';
+import 'package:spotify_clone/data/models/auth/signin_user_req.dart';
+import 'package:spotify_clone/domain/usecases/auth/sign_in.dart';
+import 'package:spotify_clone/presentation/pages/auth/pages/sign_up.dart';
+import 'package:spotify_clone/presentation/pages/home/pages/home.dart';
+import 'package:spotify_clone/service_locator.dart';
 import '../../../../common/common_import.dart';
 
+
 class SignInPage extends StatelessWidget {
-  const SignInPage({super.key});
+  SignInPage({super.key});
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +26,7 @@ class SignInPage extends StatelessWidget {
           width: 40,
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,7 +43,24 @@ class SignInPage extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            BasicAppButton(onPressed: () {}, title: 'Sign In'),
+            BasicAppButton(onPressed: () async{
+              var result = await sl<SignInUseCase>().call(
+                  params: SignInUserReq(
+                    email: _emailController.text.toString(),
+                    password: _passwordController.text.toString(),
+                  ));
+              result.fold((l) {
+                showSnack(context: context, content: l);
+              }, (r) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                      (route) => false,
+                );
+              });
+            }, title: 'Sign In'),
           ],
         ),
       ),
@@ -51,6 +77,7 @@ class SignInPage extends StatelessWidget {
 
   Widget _emailField(BuildContext context) {
     return TextField(
+      controller: _emailController,
       decoration: const InputDecoration(
         hintText: 'Enter Email',
       ).applyDefaults(
@@ -61,6 +88,7 @@ class SignInPage extends StatelessWidget {
 
   Widget _passwordField(BuildContext context) {
     return TextField(
+      controller: _passwordController,
       decoration: const InputDecoration(
         hintText: 'Password',
       ).applyDefaults(
@@ -87,7 +115,7 @@ class SignInPage extends StatelessWidget {
                 Navigator.pushReplacement(
                     context,
                     CupertinoPageRoute(
-                      builder: (context) => const SignInPage(),
+                      builder: (context) => SignUpPage(),
                     ));
               },
               child: const Text('Register Now'))
